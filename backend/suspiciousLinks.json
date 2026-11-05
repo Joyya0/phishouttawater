@@ -1,0 +1,5 @@
+{
+  "domains": ["bit.ly", "tinyurl.com", "goo.gl", "t.co", "is.gd", "secure-login-verify.com", "account-update-now.net", "paypa1-support.com"],
+  "suspiciousTlds": [".zip", ".xyz", ".top", ".click", ".gq", ".tk"],
+  "keywords": ["login-verify", "account-confirm", "update-billing", "secure-signin"]
+}

@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const { analyze } = require('./analyzer');
+const storage = require('./storage');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -11,19 +13,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Stub: real analyzer comes next.
 app.post('/api/analyze', (req, res) => {
   const { emailText } = req.body || {};
   if (typeof emailText !== 'string' || !emailText.trim()) {
     return res.status(400).json({ error: 'emailText is required' });
   }
-  res.json({
-    riskLevel: 'Low',
-    score: 0,
-    indicators: [],
-    links: [],
-    timestamp: new Date().toISOString(),
-  });
+  const result = analyze(emailText);
+  storage.save(result);
+  res.json(result);
+});
+
+app.get('/api/history', (req, res) => {
+  res.json(storage.readAll());
 });
 
 app.listen(PORT, () => console.log(`Backend listening on http://localhost:${PORT}`));
