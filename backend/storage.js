@@ -14,7 +14,10 @@ function save(result) {
     id: Date.now().toString(36),
     riskLevel: result.riskLevel,
     score: result.score,
-    indicators: result.indicators.map((i) => i.type),
+    indicators: [...new Set([
+      ...result.indicators.map((i) => i.type),
+      ...(result.links.some((l) => l.suspicious) ? ['suspicious_link'] : []),
+    ])],
     timestamp: result.timestamp,
   });
   fs.mkdirSync(path.dirname(FILE), { recursive: true });
