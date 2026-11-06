@@ -14,7 +14,7 @@ function App() {
     setResult(null);
     setError("");
   };
-
+  //ensures request is at min word limit
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -52,6 +52,7 @@ function App() {
     }
   };
 
+    //risk class
   const riskClass = (risk) => {
     const value = String(risk || "").toLowerCase();
 

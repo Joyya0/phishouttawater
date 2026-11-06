@@ -6,11 +6,15 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    proxy: {
-      "/analyze": {
-        target: "http://localhost:4000",
-        changeOrigin: true
-      }
+  proxy: {
+    "/analyze": {
+      target: "http://localhost:4000",
+      changeOrigin: true
+    },
+    "/api": {
+      target: "http://localhost:4000",
+      changeOrigin: true
     }
   }
+}
 });
