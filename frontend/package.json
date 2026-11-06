@@ -1,13 +1,21 @@
+
 {
-  "dependencies": {
-    "@tailwindcss/cli": "^4.3.4",
-    "ejs": "^7.0.2",
-    "express": "^5.3.0",
-    "tailwindcss": "^4.3.4"
-  },
+  "name": "phishouttawater-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "build:css": "tailwindcss -i ./src/input.css -o ./public/css/styles.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./public/css/styles.css --watch",
-    "start": "node server.js"
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@tailwindcss/vite": "latest",
+    "tailwindcss": "latest",
+    "vite": "latest"
   }
 }

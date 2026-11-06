@@ -1,0 +1,9 @@
+
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #354273;
+  --color-navy-dark: #29365f;
+  --font-sans: "DM Sans", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+}
