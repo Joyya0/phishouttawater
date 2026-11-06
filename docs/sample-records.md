@@ -1,12 +1,12 @@
 # Sample Records (backend)
 
 ## Purpose
-These records show what the application actually stores and how it relates to the API. They were produced by running real scans against the prototype, not written by hand. The full file is `docs/sample-records.json`.
+The records show what the application actually stores and how it relates to the API. They would produce by running real scans against the prototype, not things written by hand. The full file is `docs/sample-records.json`.
 
 ## Entities
 - **ScanRecord** (stored, one per analysis). Created by `POST /api/analyze`, read by `GET /api/history`.
 - **BlocklistEntry** (static reference data in `suspiciousLinks.json`). Read-only at runtime, never written.
-- The pasted email body is deliberately **not** an entity. It is analyzed in memory and discarded, so no email text or URLs are ever stored.
+- The pasted email body is **not** an entity. It is in the memory and discarded, so no email text or URLs are ever stored.
 
 ## ScanRecord structure
 | Field | Type | Description |
