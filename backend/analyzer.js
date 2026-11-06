@@ -1,3 +1,4 @@
+// Backend by Matthew (PHI backend tasks)
 const blocklist = require('./suspiciousLinks.json');
 
 const URGENT = [
@@ -37,13 +38,32 @@ function analyze(text) {
   const urls = [...new Set(text.match(URL_RE) || [])];
   const links = urls.map(checkLink);
 
-  const indicators = [...urgent, ...personal].map(({ points, ...rest }) => rest);
+  // Edited by Matthew: suspicious links also appear as indicators, and every indicator
+  // gets a plain-text "description" so the frontend can display it.
+  const linkIndicators = links.filter((l) => l.suspicious).map((l) => ({
+    type: 'suspicious_link', match: l.url, explanation: l.reason, points: 0,
+  }));
+  const indicators = [...urgent, ...personal, ...linkIndicators].map(({ points, ...rest }) => ({
+    ...rest,
+    description: `${rest.type === 'suspicious_link' ? 'Suspicious link' : 'Found'} "${rest.match}": ${rest.explanation}`,
+  }));
   const score = [...urgent, ...personal, ...links].reduce((s, i) => s + i.points, 0);
   const riskLevel = score >= 6 ? 'High' : score >= 3 ? 'Medium' : 'Low';
+
+  const summaries = {
+    Low: 'No strong phishing signs were found, but stay cautious with unexpected emails.',
+    Medium: 'Some phishing signs were found. Be careful before clicking links or replying.',
+    High: 'Many phishing signs were found. This email is very likely a phishing attempt.',
+  };
+  const recommendations = riskLevel === 'Low'
+    ? ['Still verify the sender if the email was unexpected.']
+    : ['Do not click any links or open attachments.', 'Do not reply with passwords or personal information.', 'Contact the company directly using a website or phone number you already trust.', 'Report the email as phishing and delete it.'];
 
   return {
     riskLevel,
     score,
+    summary: summaries[riskLevel],
+    recommendations,
     indicators,
     links: links.map(({ points, ...rest }) => rest),
     timestamp: new Date().toISOString(),

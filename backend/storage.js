@@ -1,3 +1,4 @@
+// Backend by Matthew (PHI backend tasks)
 const fs = require('fs');
 const path = require('path');
 
@@ -14,6 +15,7 @@ function save(result) {
     id: Date.now().toString(36),
     riskLevel: result.riskLevel,
     score: result.score,
+    // Edited by Matthew: record suspicious links and de-duplicate indicator types
     indicators: [...new Set([
       ...result.indicators.map((i) => i.type),
       ...(result.links.some((l) => l.suspicious) ? ['suspicious_link'] : []),
