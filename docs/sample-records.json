@@ -1,0 +1,39 @@
+[
+  {
+    "id": "mw43o7cj",
+    "riskLevel": "High",
+    "score": 11,
+    "indicators": [
+      "urgent_language",
+      "personal_info_request",
+      "suspicious_link"
+    ],
+    "timestamp": "2026-11-05T22:11:17.680Z"
+  },
+  {
+    "id": "mw43o7hd",
+    "riskLevel": "Medium",
+    "score": 3,
+    "indicators": [
+      "urgent_language",
+      "personal_info_request"
+    ],
+    "timestamp": "2026-11-05T22:11:17.855Z"
+  },
+  {
+    "id": "mw43o7mg",
+    "riskLevel": "Medium",
+    "score": 3,
+    "indicators": [
+      "suspicious_link"
+    ],
+    "timestamp": "2026-11-05T22:11:18.038Z"
+  },
+  {
+    "id": "mw43o7rv",
+    "riskLevel": "Low",
+    "score": 0,
+    "indicators": [],
+    "timestamp": "2026-11-05T22:11:18.233Z"
+  }
+]
