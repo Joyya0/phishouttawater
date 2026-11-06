@@ -34,7 +34,6 @@ form.addEventListener("submit", async (event) => {
   resultsSection.hidden = true;
 
   try {
-    // Expects the Express app to provide POST /analyze and return JSON.
     const response = await fetch("/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
