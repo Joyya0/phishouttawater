@@ -12,9 +12,9 @@ npm install
 ```
 
 ## Configure
-Optional. Copy `.env.example` to `.env` to change the port (default 3001):
+Optional. Copy `.env.example` to `.env` to change the port (default 4000):
 ```
-PORT=3001
+PORT=4000
 ```
 The server reads `PORT` from the environment and does not load `.env` by itself. To use the file, run `node --env-file=.env server.js` (Node 20.6+). Otherwise leave it unset.
 
@@ -22,7 +22,7 @@ The server reads `PORT` from the environment and does not load `.env` by itself.
 ```
 npm start
 ```
-The server listens on http://localhost:3001. It also serves the current frontend page at `/` from `../frontend/public` and `../frontend/views/index.ejs` when those exist.
+The server listens on http://localhost:4000. The React frontend runs separately (`cd frontend`, `npm install`, `npm run dev`) and forwards `/analyze` and `/api` requests to this port, so start the backend first.
 
 ## Test
 Unit tests for the analyzer:
@@ -31,8 +31,8 @@ node testAnalyzer.js
 ```
 Check the API manually (in another terminal while the server is running):
 ```
-curl http://localhost:3001/api/health
-curl -X POST http://localhost:3001/api/analyze -H "Content-Type: application/json" -d "{\"message\":\"URGENT act now! send your password at http://bit.ly/x\"}"
+curl http://localhost:4000/api/health
+curl -X POST http://localhost:4000/api/analyze -H "Content-Type: application/json" -d "{\"message\":\"URGENT act now! send your password at http://bit.ly/x\"}"
 ```
 Expected: `{"status":"ok"}`, then a High risk result with a score of 7. A request with no `message` returns `{"error":"message is required"}` with status 400.
 

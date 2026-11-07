@@ -1,11 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const { analyze } = require('./analyzer');
 const storage = require('./storage');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json({ limit: '200kb' }));
@@ -14,12 +13,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// serve the frontend from this server (so its relative fetch('/analyze')
-// works), accept both /analyze and /api/analyze, and accept 'message' or 'emailText'.
-const FRONTEND = path.join(__dirname, '..', 'frontend');
-app.use(express.static(path.join(FRONTEND, 'public')));
-app.get('/', (req, res) => res.sendFile(path.join(FRONTEND, 'views', 'index.ejs'), { headers: { 'Content-Type': 'text/html' } }));
-
+// the React frontend runs on its own Vite dev server and proxies
+// /analyze and /api to this server (port 4000), so this server no longer serves the page.
+// Accepts both /analyze and /api/analyze, and 'message' or 'emailText'.
 app.post(['/analyze', '/api/analyze'], (req, res) => {
   const body = req.body || {};
   const emailText = body.message ?? body.emailText;
