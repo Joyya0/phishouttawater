@@ -1,4 +1,3 @@
-// Backend by Matthew (PHI backend tasks)
 const blocklist = require('./suspiciousLinks.json');
 
 const URGENT = [
@@ -38,7 +37,7 @@ function analyze(text) {
   const urls = [...new Set(text.match(URL_RE) || [])];
   const links = urls.map(checkLink);
 
-  // Edited by Matthew: suspicious links also appear as indicators, and every indicator
+  // suspicious links also appear as indicators, and every indicator
   // gets a plain-text "description" so the frontend can display it.
   const linkIndicators = links.filter((l) => l.suspicious).map((l) => ({
     type: 'suspicious_link', match: l.url, explanation: l.reason, points: 0,
