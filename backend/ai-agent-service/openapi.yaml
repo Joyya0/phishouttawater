@@ -1,0 +1,153 @@
+
+openapi: 3.0.3
+
+info:
+  title: AI Agent Service API
+  version: 1.0.0
+  description: AI-powered phishing email analysis using Groq.
+
+servers:
+  - url: http://localhost:4004
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Health
+  - name: AI Analysis
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      operationId: getHealth
+      summary: Check AI Agent Service health
+      security: []
+      responses:
+        '200':
+          description: Service is running
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - service
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                    example: ai-agent-service
+
+  /analyze:
+    post:
+      tags:
+        - AI Analysis
+      operationId: analyzeEmail
+      summary: Analyze an email using the AI agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - emailText
+              properties:
+                emailText:
+                  type: string
+                  minLength: 1
+                  maxLength: 10000
+                  example: "URGENT! Verify your password at https://fake-login.example"
+      responses:
+        '200':
+          description: AI analysis completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIResult'
+
+        '400':
+          description: Invalid email input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '429':
+          description: AI rate limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '503':
+          description: AI service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+
+  schemas:
+    AIResult:
+      type: object
+      additionalProperties: false
+      required:
+        - riskLevel
+        - explanation
+        - indicators
+        - referencedScanIds
+        - toolsUsed
+        - aiGenerated
+      properties:
+        riskLevel:
+          type: string
+          enum:
+            - Low
+            - Medium
+            - High
+        explanation:
+          type: string
+        indicators:
+          type: array
+          items:
+            type: string
+        referencedScanIds:
+          type: array
+          items:
+            type: string
+        toolsUsed:
+          type: array
+          items:
+            type: string
+            enum:
+              - checkUrl
+              - getScanHistory
+        aiGenerated:
+          type: boolean
+          description: True for live AI and false for mock mode.
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string

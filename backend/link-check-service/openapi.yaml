@@ -1,0 +1,129 @@
+
+openapi: 3.0.3
+
+info:
+  title: Link Check Service API
+  version: 1.0.0
+  description: Checks URLs for known phishing and malicious threats.
+
+servers:
+  - url: http://localhost:4002
+
+tags:
+  - name: Health
+  - name: Link Check
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      operationId: getHealth
+      summary: Check service health
+      responses:
+        '200':
+          description: Service is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                    example: link-check-service
+
+  /check:
+    post:
+      tags:
+        - Link Check
+      operationId: checkUrl
+      summary: Check a URL for suspicious activity
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+            example:
+              url: https://fake-login.example
+      responses:
+        '200':
+          description: URL check completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkCheckResult'
+        '400':
+          description: Invalid or missing URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: External API rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: URL checking temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+
+  schemas:
+    LinkCheckResult:
+      type: object
+      required:
+        - url
+        - suspicious
+        - source
+        - reason
+      properties:
+        url:
+          type: string
+          format: uri
+          example: https://fake-login.example
+        suspicious:
+          type: boolean
+          example: true
+        source:
+          type: string
+          example: blocklist
+        reason:
+          type: string
+          example: URL matches a known suspicious link
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: Invalid URL format

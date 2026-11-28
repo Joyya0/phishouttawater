@@ -1,0 +1,16 @@
+{
+  "name": "link-check-service",
+  "version": "1.0.0",
+  "description": "URL reputation and phishing link detection service",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "dotenv": "^16.4.7",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.7.0"
+  }
+}
